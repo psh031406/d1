@@ -248,11 +248,6 @@ class App(tk.Tk):
                 if d < min_def and v>=target:
                     min_def, opt_T, opt_v = d, T, v
 
-        if self.csv_path:
-            with open(self.csv_path.replace(".csv","_optimization.csv"),"w", newline="", encoding="utf-8") as f:
-                w = csv.writer(f)
-                w.writerow(["T","v","H","defect_pct"])
-                w.writerows(results)
         self.status_var.set(f"최적 조합[T,v]: {opt_T}, {opt_v} (결함률 {min_def:.2f}%)")
     
     def on_close(self):
