@@ -57,10 +57,10 @@ class App(tk.Tk):
         top = ttk.LabelFrame(self, text="설정")
         top.pack(fill="x", padx=PAD, pady=PAD)
         for i,(name,var,w) in enumerate([("오븐 온도 T [°C]", self.T_set, 8),
-                                         ("라인 속도 v [개/분]", self.v_set, 8),
-                                         ("환경 습도 H [%]", self.H_env, 8),
-                                         ("업데이트 주기 [ms]", self.period, 8),
-                                         ("결함률 임계치 [%]", self.def_thr, 8)]):
+                                        ("라인 속도 v [개/분]", self.v_set, 8),
+                                        ("환경 습도 H [%]", self.H_env, 8),
+                                        ("업데이트 주기 [ms]", self.period, 8),
+                                        ("결함률 임계치 [%]", self.def_thr, 8)]):
             ttk.Label(top, text=name).grid(row=i//3, column=(i%3)*2, sticky="e", padx=PAD, pady=PAD)
             ttk.Entry(top, textvariable=var, width=w).grid(row=i//3, column=(i%3)*2+1, padx=(0, PAD), pady=PAD)
         
@@ -199,7 +199,7 @@ class App(tk.Tk):
         self.def_var.set(f"결함률: {d:.2f} %")
         self.yield_var.set(f"수율: {y:.2f} %")
         self.thr_var.set(f"임계치: {thr:.2f} %")
-
+#----------------------------------------수정1----------------------------------------
         alarm = (d >= thr)
         thrthr = 5
         global count
@@ -214,19 +214,21 @@ class App(tk.Tk):
                 count += 1
         elif not alarm:
             self.status_var.set("상태: 정상")
-        
+#----------------------------------------수정1----------------------------------------
+
+
         self.configure(highlightthickness=2, highlightbackground=("#c62828" if alarm else "#2e7d32"))
 
         if self.log_enabled.get() and self.logger.w:
             self.logger.write([time.strftime("%Y-%m-%d %H:%M:%S"),
-                               f"{T_meas:.2f}", f"{v_meas:.2f}", f"{H:.2f}",
-                               f"{d:.3f}", f"{y:.3f}", f"{tp:.3f}",
-                               (1 if alarm else 0)])
+                             f"{T_meas:.2f}", f"{v_meas:.2f}", f"{H:.2f}",
+                             f"{d:.3f}", f"{y:.3f}", f"{tp:.3f}",
+                             (1 if alarm else 0)])
 
         if self.running:
             self.after_id = self.after(per, self.loop)
-
-    def optimization(self):
+#----------------------------------------수정2----------------------------------------
+def optimization(self):
         try:
             Tmin = int(self.Tmin_var.get())
             Tmax = int(self.Tmax_var.get())
@@ -250,7 +252,7 @@ class App(tk.Tk):
 
         self.status_var.set(f"최적 조합[T,v]: {opt_T}, {opt_v} (결함률 {min_def:.2f}%)")
     
-    def on_close(self):
+def on_close(self):
         self.stop()
         self.destroy()
 
@@ -258,3 +260,5 @@ if __name__ == "__main__":
     app = App()
     app.protocol("WM_DELETE_WINDOW", app.on_close)
     app.mainloop()
+
+#----------------------------------------수정2----------------------------------------
